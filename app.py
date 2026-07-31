@@ -1,3 +1,11 @@
+import os
+import streamlit as st
+
+if hasattr(st, "secrets") and "GOOGLE_API_KEY" in st.secrets:
+    os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
+    os.environ["GEMINI_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
+
+from agent import get_agent
 from dotenv import load_dotenv
 import os
 import certifi
