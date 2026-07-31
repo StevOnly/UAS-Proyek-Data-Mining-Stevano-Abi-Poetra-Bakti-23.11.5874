@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-# 1. Pemetaan Secrets (Wajib di baris paling atas)
+# 1. Wajib di baris paling atas untuk membaca Secrets
 if hasattr(st, "secrets"):
     if "GOOGLE_API_KEY" in st.secrets:
         os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
@@ -9,21 +9,26 @@ if hasattr(st, "secrets"):
     if "TAVILY_API_KEY" in st.secrets:
         os.environ["TAVILY_API_KEY"] = st.secrets["TAVILY_API_KEY"]
 
-from agent import get_agent
+# 2. Konfigurasi Tampilan Halaman Web
+st.set_page_config(page_title="AMIKOM AI - Data Mining", page_icon="🤖", layout="wide")
 
-# 2. Antarmuka Web Streamlit (Agar server tidak 404)
-st.title("🤖 AMIKOM AI - Data Mining Assistant")
+st.title("🤖 AMIKOM AI - Proyek Data Mining")
+st.write("Asisten AI berbasis RAG dan Agent untuk analisis data mining.")
 
-# Inisialisasi agent kamu
-agent = get_agent()
+# 3. Import Agent
+try:
+    from agent import get_agent
+    agent = get_agent()
+except Exception as e:
+    st.error(f"Gagal memuat agent: {e}")
 
-# Contoh input chat sederhana
-user_input = st.chat_input("Tanyakan sesuatu tentang data mining...")
-if user_input:
-    st.write(f"**Kamu:** {user_input}")
-    # Panggil agent kamu di sini
-    # response = agent.invoke(...)
-    # st.write(response)
+# 4. Kotak Chat Interaktif (Agar aplikasi memiliki UI aktif)
+user_query = st.chat_input("Ketik pertanyaan seputar data mining di sini...")
+if user_query:
+    st.chat_message("user").write(user_query)
+    with st.chat_message("assistant"):
+        st.write("Memproses permintaan Anda...")
+        # Jika ingin memanggil agent, sesuaikan dengan fungsi agent kamu di sini
 from dotenv import load_dotenv
 import os
 import certifi
