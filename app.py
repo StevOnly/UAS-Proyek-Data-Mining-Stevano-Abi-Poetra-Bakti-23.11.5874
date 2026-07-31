@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-# Memetakan Secrets ke Environment Variables
+# 1. Pemetaan Secrets (Wajib di baris paling atas)
 if hasattr(st, "secrets"):
     if "GOOGLE_API_KEY" in st.secrets:
         os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
@@ -10,6 +10,20 @@ if hasattr(st, "secrets"):
         os.environ["TAVILY_API_KEY"] = st.secrets["TAVILY_API_KEY"]
 
 from agent import get_agent
+
+# 2. Antarmuka Web Streamlit (Agar server tidak 404)
+st.title("🤖 AMIKOM AI - Data Mining Assistant")
+
+# Inisialisasi agent kamu
+agent = get_agent()
+
+# Contoh input chat sederhana
+user_input = st.chat_input("Tanyakan sesuatu tentang data mining...")
+if user_input:
+    st.write(f"**Kamu:** {user_input}")
+    # Panggil agent kamu di sini
+    # response = agent.invoke(...)
+    # st.write(response)
 from dotenv import load_dotenv
 import os
 import certifi
